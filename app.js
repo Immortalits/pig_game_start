@@ -1,6 +1,6 @@
 
 
-let scores, roundScore, activePlayer;
+let scores, roundScore, activePlayer, previousDices;
 
 // létrehoztuk az új játék függvényt
 function init() {
@@ -13,6 +13,8 @@ function init() {
 
   // mindig az első játékos kezd
   activePlayer = 0;
+
+  previousDices = [0, 0];
 
   // beállítjuk a kezdő értékeket a UI-on is
   document.querySelector('#score-0').textContent = 0;
@@ -59,6 +61,27 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
     document.querySelector('#current-' + activePlayer).textContent = roundScore;
   } else {
     nextPlayer();
+  }
+  // ha 6-ost dob a játékos
+  if (dice === 6) {
+    // vizsgáljuk, hogy előzőleg 6-ost dobott e
+    if (previousDices[activePlayer] === 6) {
+      // ha igen, akkor a pontjai nullázódnak
+      scores[activePlayer] = 0;
+      // a nullázódott pontokat megjelenítjük
+      document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+      // másik játékos jön
+      nextPlayer();
+    }
+    // ha az előző dobás értéke nem 6
+    else {
+      // akkor az előző dobás értéke a jelenlegi dobásra módosul
+      previousDices[activePlayer] = dice;
+    }
+    // ha a jelenlegi dobás értéke nem 6
+  } else {
+    // akkor az előző dobás értéke a jelenlegi dobás értékére módosul
+    previousDices[activePlayer] = dice;
   }
 });
 
