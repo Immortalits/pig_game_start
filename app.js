@@ -1,6 +1,14 @@
 
 
-let scores, roundScore, activePlayer;
+let scores, roundScore, activePlayer, finalScore;
+
+
+// nem akar működni ez alapértelmezett 100 max pont
+if (document.getElementsByClassName('final-score')[0].value === '') {
+  finalScore = 100;
+} else {
+  finalScore = document.getElementsByClassName('final-score')[0].value;
+}
 
 // létrehoztuk az új játék függvényt
 function init() {
@@ -13,6 +21,8 @@ function init() {
 
   // mindig az első játékos kezd
   activePlayer = 0;
+
+  finalScore = document.getElementsByClassName('final-score')[0].value;
 
   // beállítjuk a kezdő értékeket a UI-on is
   document.querySelector('#score-0').textContent = 0;
@@ -85,7 +95,7 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
   scores[activePlayer] = scores[activePlayer] + roundScore;
   // update the UI
   document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
-  if (scores[activePlayer] >= 20) {
+  if (scores[activePlayer] >= finalScore) {
     // játék vége
     document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
     document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
